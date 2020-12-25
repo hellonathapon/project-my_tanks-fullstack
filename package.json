@@ -1,0 +1,17 @@
+{
+  "name": "project-my_tanks-fullstack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.19.1",
+    "express": "^4.17.1",
+    "graphql": "^15.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
