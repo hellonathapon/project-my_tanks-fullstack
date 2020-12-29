@@ -1,14 +1,26 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-    type Tank {
-        id: ID
+    input TankMake {
         name: String
+        country: String
+    }
+    type Tank {
+        _id: String
+        name: String
+        country: String
+    }
+    type Mutation {
+        addTank ( input: TankMake ): Tank
     }
     type Query {
         hello: String
-        tank: Tank
+        tank (id: String!): Tank
+        tanks: [ Tank ]
+        country (name: String!): [ Tank ]
     }
+    
 `;
 
 module.exports = typeDefs;
+
