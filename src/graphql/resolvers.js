@@ -20,6 +20,7 @@ const resolvers = {
             }
             catch(err) {
                 console.error(err)
+                throw new Error(err)
             }
             
         },
@@ -31,6 +32,7 @@ const resolvers = {
             }
             catch(err) {
                 console.error(err)
+                throw new Error(err)
             }
         },
 
@@ -41,6 +43,7 @@ const resolvers = {
             }
             catch(err) {
                 console.error(err)
+                throw new Error(err)
             }
         },
     },
