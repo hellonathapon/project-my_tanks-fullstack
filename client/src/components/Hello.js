@@ -34,8 +34,6 @@ const Hello = () => {
     // if (loading) return console.log('Loading...')
     // if (err) return console.log('Error :(');
 
-    console.log(data)
-
     // change state on click
     const handleClickIcon = (e) => {
         // console.log(e.target.alt)
@@ -74,13 +72,13 @@ const Hello = () => {
             <div className="row">
 
                 <div className="col s12 m6">
-                    <div className="card blue-grey darken-1">
-                        <div className="card-content white-text">
+                    <div className="card card-default">
+                        <div className="card-content ">
                             <span className="card-title">Available Country</span>
                                 <div className="country-icon-ctn">
                                     { icons.map(icon => (
                                         <figure onClick={ handleClickIcon } className="country-icon" key={ icon.title }>
-                                            <a className="modal-trigger" href="#modal2"><img src={ icon.iconUrl} alt={ icon.title }/></a>   
+                                            <a className="modal-trigger" href="#modal2" ><img src={ icon.iconUrl} alt={ icon.title }/></a>   
                                         </figure>
                                     )) }    
                                 </div> 

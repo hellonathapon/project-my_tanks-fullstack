@@ -1,39 +1,65 @@
 import React from 'react'
 import M from 'materialize-css'
+import { useLazyQuery, gql } from '@apollo/client';
+
+const GET_TANK = gql`
+    query getTank($id: String!) {
+        tank(id: $id) {
+            name
+            country
+        }
+    }
+`
 
 const Recent = () => {
 
+    // materialize option for modal pop-up dialog
     const options = {
         inDuration: 250,
         outDuration: 250,
         opacity: 0.5,
         dismissible: false,
         startingTop: "4%",
-        endingTop: "10%"
+        endingTop: "10%",
+        preventScrolling: true,
     };
 
-    let dialogRef = React.createRef();
+    // register ref
+    let dialogGetTank = React.createRef();
 
     React.useEffect(() => {
-        // pass ref `Modal` to Materialize to handle those popup anim stuffs :)
-        M.Modal.init(dialogRef, options);
-
-        console.log(dialogRef)
-
-        // destroy Modal when component destroy
-        // return () => M.Modal.destroy();
+        M.Modal.init(dialogGetTank, options);
     })
 
+
+    const [ id, setId ] = React.useState("5fe57bbd4aaf5f137eae7fa4");
+
+
+    // const handleInput = (e) => {
+    //     e.preventDefault()
+    //     setId(e.target.value);
+    // }
+
+    // for trigger query on click event
+    const [ getTank, { loading, data }] = useLazyQuery(GET_TANK, {
+        variables: { id }
+    });
+    // const { loading, err, data } = useQuery(GET_TANK, {
+    //     variables: { id }
+    // });
+
+    console.log(data)
 
     return (
         <div className="container">
             <div className="row">
+                {/* pic card */}
                 <div className="col s12 m8">
                     <div className="card recent-ctn">
                         <div className="card-content">
                             <div className="title-ctn">
-                                <p className="card-title title">Recently Added: T-30 USA</p>
-                                <i className="material-icons">favorite</i>
+                                <p className="card-title title">Recently Added <h4 className="recent-tank">T-30</h4></p>
+                                <i className="material-icons heart">favorite</i>
                             </div>
                             <p className="card-subtitle">12 June 2020</p>
                             <img className="img-model" src={ require('../assets/t-30.png').default } alt="t-30"/>
@@ -41,79 +67,51 @@ const Recent = () => {
                     </div>
                 </div>
 
-                <div className="col s12 m4">
-                    <div className="card recent-ctn recent-ctn--info">
-                        <div className="card-content">
-                            <div className="flex-d">
-                                <i className="material-icons">label</i>
-                                <p>Name: T-30</p>
-                            </div>
-                            <div className="flex-d">
-                                <i className="material-icons">flag</i>
-                                <p>Country: USA</p>
-                            </div>
-                            <div className="flex-d">
-                                <i className="material-icons">layers</i>
-                                <p>Type: Tank Destroyer</p>
-                            </div>
-                            <div className="flex-d">
-                                <i className="material-icons">add</i>
-                                <p>Year of Researve: 1945 - 1950</p>
-                            </div>
+                {/* info card */}
+                <div className="col s12 m4 card-info-ctn">
+                    <div className="card card-recent-info">
+                        <div className="card-recent-info__control">
+                            <p>Name </p>
+                            <p>Test</p>
+                        </div>
+                    </div>
+                    <div className="card card-recent-info">
+                        <div className="card-recent-info__control">
+                            <p>Country</p>
+                            <p>Test</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* trigger model */}
-            {/* <a className="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> */}
-            <a className="btn-floating btn-large waves-effect waves-light red modal-trigger absl-btn" href="#modal1"><i className="material-icons">add</i></a>
+            {/* fetch specific tank btn trigger */}
+            <a className="btn-floating btn-large modal-trigger absl-btn" href="#modalGetTank"><i className="material-icons">add</i></a>
 
-            {/* model-1 */}
-            {/* <div 
-                ref={modal => {
-                    dialogRef = modal;
-                }}
-                id="modal1" className="modal"
-            >
-                <div className="modal-content">
-                <h4>Modal Header</h4>
-                <p>A bunch of text</p>
-                </div>
-                <div className="modal-footer">
-                <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
-                </div>
-            </div> */}
-
-            {/* model-2 */}
+            {/* modal for input specific tank `id` */}
             <div 
-                ref={modal => {
-                    dialogRef = modal;
+                ref={ modal => {
+                    dialogGetTank = modal
                 }}
-                id="modal1" 
-                className="modal bottom-sheet"
+                id="modalGetTank" 
+                class="modal"
             >
-                <div className="modal-content">
-                <h4>Insert New Tank</h4>
-                <p>A bunch of text</p>
-
-                <div className="row">
-                    <div className="input-field col s12 m3">
-                    <input placeholder="Name of new Tank" id="first_name" type="text" className="validate"/>
-                    <label htmlFor="first_name">Name</label>
-                    </div>
-                    <div className="input-field col s12 m3">
-                    <input placeholder="Country of Origin" id="last_name" type="text" className="validate"/>
-                    <label htmlFor="last_name">Country</label>
-                    </div>
+                <div class="modal-content">
+                <h4>Fetch Specific Tank</h4>
+                <p className="sub-title">You can get tank id by click on any related country icon fields</p>
+                {/* <div class="input-field col s12">
+                    <i class="material-icons prefix">textsms</i>
+                    <input onChange={ handleInput } type="text" id="autocomplete-input" class="autocomplete" />
+                    <label for="autocomplete-input">tank id</label>
+                </div> */}
+                <div class="input-field col s12">
+                    <input onChange={ (e) => setId(e.target.value) } data-keyboard="true" id="input-id" type="text" />
+                    <label for="input-id">tank Id</label>
                 </div>
-
                 </div>
-                <div className="modal-footer">
-                <a href="#!" className="modal-close waves-effect waves-green btn-flat">Agree</a>
+                <div class="modal-footer">
+                <a onClick={ () => getTank() } href="#!" class="modal-close teal white-text btn-flat">Fetch</a>
                 </div>
             </div>
-
         </div>
     )
 }
