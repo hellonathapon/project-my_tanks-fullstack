@@ -1,7 +1,10 @@
 import React from 'react';
-import { Grid, Typography, Avatar, Button, CssBaseline, TextField, Link, Paper } from '@material-ui/core'
-// import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Typography, Avatar, Button, CssBaseline, TextField, Paper,
+  Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
+} from '@material-ui/core'
+import InfoPanel from './components/InfoPanel';
+import ByCountry from './components/ByCountry';
+import useStyles from './themes/theme' // make use custom style out of the `MD` default
 import { useLazyQuery, gql } from '@apollo/client';
 
 // init Apollo query
@@ -14,46 +17,15 @@ const GET_TANK = gql`
   }
 `
 
-// custom styles out of the lib. 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-  image: {
-    backgroundImage: 'url(https://s2.best-wallpaper.net/wallpaper/1920x1200/1608/World-of-Tanks-PS4-games_1920x1200.jpg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export default function App() {
-  // instance custome style to be used in this fn()
+  // instanciate custome style as `classes`
   const classes = useStyles();
 
-  // states
+  // define local states
   const [ id, setId ] = React.useState(null);
+  
 
-  // Apollo fn to make query on btn triger
+  // Apollo triggering fn.
   const [ getTank, { loading, err, data }] = useLazyQuery(GET_TANK, {
     variables: { id }
   })
@@ -64,35 +36,20 @@ export default function App() {
   }
   const handleTankSubmit = (e) => {
     e.preventDefault();
-    getTank() // trigger query here
+    getTank() // trigger Apollo query here
   }
-
-  console.log(data)
-  // conditional reder data
-  const rederData = data ? (
-    <>
-      <h2>{ data.tank.name }</h2>
-      <h4>{ data.tank.country }</h4>
-    </>
-  ) : (
-    <p>No Data :)</p>
-  )
 
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={4} md={7} className={classes.image}>
-        <div className={classes.paper}>
-          <h1>Conditional result goes here</h1>
-          { rederData }
-        </div>
-      </Grid>
+      
+      <InfoPanel data={ data }/>
 
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           
-          <Avatar className={classes.avatar}>
-            {/* <LockOutlinedIcon /> */}Hi
+          <Avatar className={classes.large}>
+            Hi
           </Avatar>
 
           <Typography component="h1" variant="h5">
@@ -112,10 +69,6 @@ export default function App() {
               autoFocus
               onChange={ handleIdInput }
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth
@@ -127,21 +80,7 @@ export default function App() {
               Roll Out
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  USA
-                </Link>
-              </Grid>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  USSR
-                </Link>
-              </Grid>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Germany
-                </Link>
-              </Grid>
+              <ByCountry />
             </Grid>
           </form>
         </div>
