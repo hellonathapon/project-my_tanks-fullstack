@@ -45,9 +45,9 @@ export default function ByCountry() {
     console.log(data)
 
     const renderData = data ? data.country.map(country => (
-        <ListItem key={ country.name }>
-            <ListItemText>{ country._id }</ListItemText>
-            <ListItemText>{ country.name }</ListItemText>
+        <ListItem key={ country.name } className={ classes.flexCol }>
+            <ListItemText>ID: <b>{ country._id }</b></ListItemText>
+            <ListItemText>Model: <b>{ country.name }</b></ListItemText>
         </ListItem>
     )) : 
     ( <p>Wait Umm smth went wrong i can feel it!</p> )
@@ -68,13 +68,13 @@ export default function ByCountry() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Use Google's location service?"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{ countryName }</DialogTitle>
                 
                 { renderData }
 
                 <DialogActions>
                 <Button onClick={ handleClose } color="primary">
-                    Gotcha!
+                    Got it!
                 </Button>
                 </DialogActions>
             </Dialog>

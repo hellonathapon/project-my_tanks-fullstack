@@ -26,12 +26,13 @@ export default function InfoPanel({ data }) {
                   { data.tank.name }
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
+                  { data.tank.type }
+                </Typography>
+                <Typography variant="body2" color="textSecondary" component="p">
                   { data.tank.country }
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  Nashorn is the German name for "Rhino", it is arguably one of greet Camper tank of middle Tier in World of Tank
-                  stable gun and hight comoflag make this tank stands out from other countries Tank Destroyer (TD)
-                  the only cons of her is paper armor, they say even a rock can panetret Nashorn  armor :)
+                  { data.tank.desc }
                 </Typography>
               </CardContent>
             </CardActionArea>
@@ -42,9 +43,7 @@ export default function InfoPanel({ data }) {
             </CardActions>
           </Card>
     </>
-    ) : (
-        <p>No Data :)</p>
-    );
+    ) : "";
 
 
     return (

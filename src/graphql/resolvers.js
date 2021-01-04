@@ -1,4 +1,4 @@
-// const { AuthenticationError } = require('apollo-server-express')
+const { UserInputError } = require('apollo-server-express')
 const tanks = require('../models/Tank');
 
 class MakeTank {
@@ -11,16 +11,23 @@ class MakeTank {
 
 const resolvers = {
     Query: {
-        hello: () => 'Hello, what a great day to be alive hahaha :D',
-
         tank: async (_, { id }) => {
             try {
-                const result = await tanks.find({ _id: id });
-                return new MakeTank(result[0])
+                // parior check if it's valid id
+                if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                    const result = await tanks.find({ _id: id });
+                    console.log(result)
+                    return new MakeTank(result[0])
+                }else {
+                    console.log('Not a valid id!')
+                    throw new UserInputError('Not a valid ID!')
+                }
+                
+                
             }
             catch(err) {
                 console.error(err)
-                throw new Error(err)
+                throw new UserInputError(err)
             }
             
         },
