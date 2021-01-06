@@ -9,7 +9,7 @@ export default function InfoPanel({ data }) {
   // instance custome style to be used in this fn()
   const classes = useStyles();
 
-  console.log(data)
+  // console.log(data)
 
     // conditional reder data
   const rederData = data ? (
@@ -36,11 +36,6 @@ export default function InfoPanel({ data }) {
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              <Button size="small" color="primary">
-                INTERESTING
-              </Button>
-            </CardActions>
           </Card>
     </>
     ) : "";

@@ -1,12 +1,7 @@
-/**
-   * TODO($bug): `useLazyQuery` fn automatically triggers after components re-rendered
-   * which is the consequences of data is changed although it is bound to a btn event click to get query.
-*/
-
 import React from 'react';
 import { Grid, Typography, Avatar, Button, CssBaseline, TextField, Paper, Snackbar } from '@material-ui/core'
 import InfoPanel from './components/InfoPanel';
-import ByCountry from './components/ByCountry';
+import CountryQuery from './components/CountryQuery';
 import useStyles from './themes/theme' // make use custom style out of the `MD` default variants
 import { gql, useApolloClient  } from '@apollo/client';
 
@@ -14,8 +9,11 @@ import { gql, useApolloClient  } from '@apollo/client';
 const GET_TANK = gql`
   query getTank($id: String!) {
     tank(id: $id) {
+      _id
       name
       country
+      desc
+      type
     }
   }
 `
@@ -29,12 +27,11 @@ export default function App() {
   const [ id, setId ] = React.useState(null);
   const [ data, setData ] = React.useState(null);
   const [ openSnackbar, setOpenSnackbar ] = React.useState(false);
-  const [ errSnackbarMsg, setErrSnackbarMsg ] = React.useState(null);
+  const [ errSnackbarMessage, setErrSnackbarMessage ] = React.useState(null);
 
   /**
-   * NOTE: `useLazyQuery` which meant to listen on specific event like btn click
-   * automatically fires when component re-renderd which is the consequance of local
-   * state changes. so i replaced it with `useApolloClient` hook
+   * NOTE: `useLazyQuery` automatically fires when component re-renderd which is the consequences of local
+   * state change. So replaced it with `useApolloClient` hook to manually trigger query.
    */
   const handleTankSubmit = async (e) => {
     e.preventDefault();
@@ -44,14 +41,13 @@ export default function App() {
         query: GET_TANK,
         variables: { id },
       });
-      console.log(res)
-      setData(res.data)
-      client.resetStore()
+      setData(res.data);
+
     }catch(err) {
       // just in case incorrect || invalid `ID`
       console.log(err.message)
       setOpenSnackbar(true);
-      setErrSnackbarMsg(err.message)
+      setErrSnackbarMessage(err.message)
     }
   }
 
@@ -94,16 +90,18 @@ export default function App() {
             >
               Fetch
             </Button>
+            <p>Select any of these Nations to get specific tank ID</p>
             <Grid container>
-              <ByCountry />
+              <CountryQuery />
             </Grid>
+
           </form>
         </div>
       </Grid>
 
       {/* ============= snackbar for healthy UX ======== */}
       <Snackbar
-        message={ errSnackbarMsg }
+        message={ errSnackbarMessage }
         open={openSnackbar}
         onClose={() => setTimeout(() => setOpenSnackbar(false), 2000)}
       />

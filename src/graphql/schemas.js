@@ -9,12 +9,13 @@ const typeDefs = gql`
         _id: String
         name: String
         country: String
+        type: String
+        desc: String
     }
     type Mutation {
         addTank ( input: TankMake ): Tank
     }
     type Query {
-        hello: String
         tank (id: String!): Tank
         tanks: [ Tank ]
         country (name: String!): [ Tank ]

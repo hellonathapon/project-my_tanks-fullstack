@@ -1,8 +1,8 @@
 import React from 'react'
 import useStyles from '../themes/theme'
-import { Grid, Button, ListItem, ListItemText,
-    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
-} from '@material-ui/core'
+import { Grid, Button, ListItemAvatar, ListItemIcon, Avatar, ListItem, ListItemText,Dialog, DialogTitle, DialogActions, Divider,}from '@material-ui/core';
+import GradeIcon from '@material-ui/icons/Grade';
+import FiberIcon from '@material-ui/icons/FiberManualRecord';
 import { useLazyQuery, gql } from '@apollo/client';
 
 const GET_TANKS_BY_COUNTRY = gql`
@@ -14,7 +14,7 @@ const GET_TANKS_BY_COUNTRY = gql`
     }
 `
 
-export default function ByCountry() {
+export default function CountryQuery() {
     const classes = useStyles();
 
     const [ countryName, setCountryName ] = React.useState(null);
@@ -44,13 +44,27 @@ export default function ByCountry() {
 
     console.log(data)
 
-    const renderData = data ? data.country.map(country => (
-        <ListItem key={ country.name } className={ classes.flexCol }>
-            <ListItemText>ID: <b>{ country._id }</b></ListItemText>
-            <ListItemText>Model: <b>{ country.name }</b></ListItemText>
-        </ListItem>
+    const renderData = data && data.country.length !== 0 ? data.country.map(country => (
+        <>
+            <ListItem key={ country.name } className={ classes.flexCol }>
+                <div className={ classes.flex }>
+                    <ListItemIcon>
+                        <GradeIcon />
+                    </ListItemIcon>
+                    <ListItemText>ID: <b>{ country._id }</b></ListItemText>
+                </div>
+                <div className={ classes.flex }>
+                    <ListItemIcon>
+                        <FiberIcon />
+                    </ListItemIcon>
+                    <ListItemText>Model: <b>{ country.name }</b></ListItemText>
+                </div>
+                <Divider className={ classes.lineBreak }/>
+            </ListItem>
+            <Divider />
+        </>
     )) : 
-    ( <p>Wait Umm smth went wrong i can feel it!</p> )
+    ( <ListItemText>Sorry! No tank with this Country</ListItemText> )
 
     return (
         <>
@@ -61,19 +75,18 @@ export default function ByCountry() {
                   </div>
                 )) }
             </Grid>
+                
 
             <Dialog
                 open={open}
                 onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{ countryName }</DialogTitle>
+                <DialogTitle id="alert-dialog-title">List of tanks from { countryName }</DialogTitle>
                 
                 { renderData }
 
                 <DialogActions>
-                <Button onClick={ handleClose } color="primary">
+                <Button onClick={ handleClose } variant="contained" color="primary">
                     Got it!
                 </Button>
                 </DialogActions>

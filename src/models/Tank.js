@@ -5,6 +5,8 @@ const tankSchema = new Schema({
     id: String,
     name: String,
     country: String,
+    desc: String,
+    type: String,
 });
 
 const tank = mongoose.model('tank', tankSchema);

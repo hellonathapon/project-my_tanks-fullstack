@@ -8,8 +8,6 @@ const useStyles = makeStyles((theme) => ({
     image: {
       backgroundImage: 'url(https://s2.best-wallpaper.net/wallpaper/1920x1200/1608/World-of-Tanks-PS4-games_1920x1200.jpg)',
       backgroundRepeat: 'no-repeat',
-      // backgroundColor:
-      //   theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     },
@@ -23,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',  
         flexFlow: 'row wrap',
         justifyContent: 'space-between',
+        marginBottom: '.5rem',
     },
     flexCol: {
       display: 'flex',
