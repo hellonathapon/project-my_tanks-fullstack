@@ -10,7 +10,7 @@ $ yarn start
 
 ## Overview
 This is my very simple data-flow app to illustrate the efficiency of GraphQL for API handling
-  - Create Express server intergreted with GraphQL-Apollo to sharpinga any up-comming query with schema language 
+  - Create Express server integreted with GraphQL-Apollo to specify any up-comming query with schema language 
   - Make use Mongoose for modeling data to Database
   - Front-end simply makes all the requests to a single End-point to get API served 
   
